@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>网购平台 - 首页</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 20px 40px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: #222;
+        }
+
+        header form {
+            display: flex;
+            gap: 10px;
+        }
+
+        header input[type="text"] {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            width: 250px;
+        }
+
+        header button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #333;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        header button:hover {
+            background-color: #555;
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 10px 40px;
+            margin: 0;
+            color: red;
+            font-size: 0.95rem;
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            padding: 40px;
+        }
+
+        .product {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .product:hover {
+            transform: translateY(-4px);
+        }
+
+        .product h3 {
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        .product p {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .product a {
+            display: inline-block;
+            margin-right: 12px;
+            padding: 8px 14px;
+            background-color: #333;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .product a:hover {
+            background-color: #555;
+        }
+
+        footer {
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+
+        footer a {
+            margin: 0 15px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>网购平台</h1>
+        <form action="{{ url_for('search') }}" method="get">
+            <input type="text" name="q" placeholder="搜索商品">
+            <button type="submit">搜索</button>
+        </form>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flash-messages">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+
+    <div class="product-list">
+        {% for product in products %}
+        <div class="product">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p>价格: ¥{{ product.price }}</p>
+            <a href="{{ url_for('product_detail', product_id=product.id) }}">查看详情</a>
+            <a href="{{ url_for('add_to_cart', product_id=product.id) }}">加入购物车</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <footer>
+        <div>
+            <a href="{{ url_for('shopping_cart') }}">购物车</a>
+            <a href="{{ url_for('my_page') }}">我的</a>
+        </div>
+    </footer>
+</body>
+</html>

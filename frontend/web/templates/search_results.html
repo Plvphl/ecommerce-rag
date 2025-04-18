@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 40px;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.6rem;
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .product {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .product h3 {
+            margin: 0 0 10px;
+            font-size: 1.2rem;
+        }
+
+        .product p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .product a {
+            display: inline-block;
+            margin-right: 10px;
+            margin-top: 8px;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 0.95rem;
+        }
+
+        .product a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .no-result {
+            text-align: center;
+            color: #999;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>搜索结果：{{ query }}</h2>
+
+    {% if products %}
+        <div class="product-list">
+            {% for product in products %}
+            <div class="product">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p>价格: ¥{{ product.price }}</p>
+                <a href="{{ url_for('product_detail', product_id=product.id) }}">查看详情</a>
+                <a href="{{ url_for('add_to_cart', product_id=product.id) }}">加入购物车</a>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-result">未找到与 "{{ query }}" 相关的商品。</p>
+    {% endif %}
+
+    <footer>
+        <a href="{{ url_for('index') }}">← 返回首页</a>
+    </footer>
+
+</body>
+</html>

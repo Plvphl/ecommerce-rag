@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }} - 商品详情</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #222;
+            text-decoration: none;
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .flash-messages li {
+            color: red;
+            font-size: 1rem;
+        }
+
+        .product-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 40px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .product-info {
+            max-width: 600px;
+        }
+
+        .product-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .product-price,
+        .product-stock,
+        .product-rating {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .product-image {
+            max-width: 500px;
+            width: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 10px 16px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .button:hover {
+            background-color: #555;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #333;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #555;
+        }
+
+        .back-button {
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 显示闪现消息 -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <!-- 返回上一页按钮 -->
+        <p class="back-button"><a href="javascript:history.back()">← 返回上一页</a></p>
+
+        <!-- 商品详情 -->
+        <div class="product-details">
+            <!-- 商品信息 -->
+            <div class="product-info">
+                <h2 class="product-title">{{ product.name }}</h2>
+
+                <p class="product-description">{{ product.description }}</p>
+
+                <p class="product-price"><strong>价格:</strong> ¥{{ product.price }}</p>
+                <p class="product-stock"><strong>库存:</strong> {{ product.stock or "未知" }}</p>
+                <p class="product-rating"><strong>评分:</strong> {{ product.rating or "暂无评分" }}</p>
+
+                <div class="action-buttons">
+                    <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="button">🛒 加入购物车</a>
+                    <a href="{{ url_for('order_page', product_id=product.id) }}" class="button">🛒 立即下单</a>
+                </div>
+            </div>
+
+            <!-- 商品图片 -->
+            <div class="product-image">
+                {% if product.image %}
+                    <img src="{{ product.image }}" alt="{{ product.name }}">
+                {% else %}
+                    <p>[暂无商品图片]</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <footer>
+            <a href="javascript:history.back()">← 返回首页</a>
+        </footer>
+    </div>
+</body>
+</html>

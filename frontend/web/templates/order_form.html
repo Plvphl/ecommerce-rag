@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>确认订单 - {{ product.name }}</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 40px 20px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .product-info img {
+            max-width: 300px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .product-info p {
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        form input[type="text"] {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        form button {
+            padding: 12px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        form button:hover {
+            background-color: #555;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #333;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>确认订单</h2>
+
+        <div class="product-info">
+            <img src="{{ product.image }}" alt="{{ product.name }}">
+            <p><strong>商品名称:</strong> {{ product.name }}</p>
+            <p><strong>分类:</strong> {{ product.category }}</p>
+            <p><strong>价格:</strong> ¥{{ product.price }}</p>
+            <p><strong>库存:</strong> {{ product.stock }}</p>
+            <p><strong>评分:</strong> {{ product.rating }}</p>
+        </div>
+
+        <form action="{{ url_for('submit_order') }}" method="post">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <p><strong>收件人姓名:</strong> <input type="text" name="recipient" required></p>
+            <p><strong>电话号码:</strong> <input type="text" name="phone" required></p>
+            <p><strong>收货地址:</strong> <input type="text" name="address" required></p>
+            <button type="submit">付款</button>
+        </form>
+
+        <div class="back-link">
+            <p><a href="{{ url_for('product_detail', product_id=product.id) }}">← 返回商品详情</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

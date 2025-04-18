@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h2 {
+            text-align: center;
+            padding: 30px 0 10px;
+            font-size: 1.8rem;
+        }
+
+        .flash-messages {
+            list-style: none;
+            padding: 10px 30px;
+            color: red;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0 40px;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        li a:first-child {
+            font-weight: 500;
+            text-decoration: none;
+            color: #333;
+        }
+
+        li a:first-child:hover {
+            text-decoration: underline;
+        }
+
+        li span {
+            color: #666;
+        }
+
+        li a:last-child {
+            color: #e74c3c;
+            text-decoration: none;
+            margin-left: 10px;
+            font-size: 0.95rem;
+        }
+
+        li a:last-child:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>购物车</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash-messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <ul>
+        {% for item in cart %}
+        <li>
+            <div>
+                <a href="{{ url_for('product_detail', product_id=item.id) }}">{{ item.name }}</a> - ¥{{ item.price }}
+            </div>
+            <div>
+                <a href="{{ url_for('remove_from_cart', product_id=item.id) }}">❌ 移出</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <footer>
+        <a href="{{ url_for('index') }}">← 返回首页</a>
+    </footer>
+</body>
+</html>
